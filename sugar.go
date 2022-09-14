@@ -114,6 +114,11 @@ func (s *SugaredLogger) With(args ...interface{}) *SugaredLogger {
 	return &SugaredLogger{base: s.base.With(s.sweetenFields(args)...)}
 }
 
+// Trace uses fmt.Sprint to construct and log a message.
+func (s *SugaredLogger) Trace(args ...interface{}) {
+	s.log(TraceLevel, "", args, nil)
+}
+
 // Debug uses fmt.Sprint to construct and log a message.
 func (s *SugaredLogger) Debug(args ...interface{}) {
 	s.log(DebugLevel, "", args, nil)
@@ -150,6 +155,11 @@ func (s *SugaredLogger) Fatal(args ...interface{}) {
 	s.log(FatalLevel, "", args, nil)
 }
 
+// Tracef uses fmt.Sprintf to log a templated message.
+func (s *SugaredLogger) Tracef(template string, args ...interface{}) {
+	s.log(TraceLevel, template, args, nil)
+}
+
 // Debugf uses fmt.Sprintf to log a templated message.
 func (s *SugaredLogger) Debugf(template string, args ...interface{}) {
 	s.log(DebugLevel, template, args, nil)
@@ -184,6 +194,15 @@ func (s *SugaredLogger) Panicf(template string, args ...interface{}) {
 // Fatalf uses fmt.Sprintf to log a templated message, then calls os.Exit.
 func (s *SugaredLogger) Fatalf(template string, args ...interface{}) {
 	s.log(FatalLevel, template, args, nil)
+}
+
+// Tracew logs a message with some additional context. The variadic key-value
+// pairs are treated as they are in With.
+//
+// When debug-level logging is disabled, this is much faster than
+//  s.With(keysAndValues).Trace(msg)
+func (s *SugaredLogger) Tracew(msg string, keysAndValues ...interface{}) {
+	s.log(TraceLevel, msg, nil, keysAndValues)
 }
 
 // Debugw logs a message with some additional context. The variadic key-value

@@ -36,6 +36,7 @@ func TestHooks(t *testing.T) {
 		coreLevel  Level
 		expectCall bool
 	}{
+		{TraceLevel, InfoLevel, false},
 		{DebugLevel, InfoLevel, false},
 		{InfoLevel, InfoLevel, true},
 		{WarnLevel, InfoLevel, true},

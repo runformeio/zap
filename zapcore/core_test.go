@@ -48,6 +48,7 @@ func TestNopCore(t *testing.T) {
 	ce := &CheckedEntry{}
 
 	allLevels := []Level{
+		TraceLevel,
 		DebugLevel,
 		InfoLevel,
 		WarnLevel,
@@ -131,6 +132,7 @@ func TestIOCoreSyncsOutput(t *testing.T) {
 		entry      Entry
 		shouldSync bool
 	}{
+		{Entry{Level: TraceLevel}, false},
 		{Entry{Level: DebugLevel}, false},
 		{Entry{Level: InfoLevel}, false},
 		{Entry{Level: WarnLevel}, false},
@@ -145,7 +147,7 @@ func TestIOCoreSyncsOutput(t *testing.T) {
 		core := NewCore(
 			NewJSONEncoder(testEncoderConfig()),
 			sink,
-			DebugLevel,
+			TraceLevel,
 		)
 
 		core.Write(tt.entry, nil)
